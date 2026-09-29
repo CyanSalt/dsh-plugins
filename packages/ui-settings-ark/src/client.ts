@@ -255,8 +255,8 @@ class ArkSettingsCardController {
     if (!response.ok) return
     const credential = response.value[reference]
     const next = {
-      configured: credential?.configured ?? false,
-      writable: credential?.writable ?? true,
+      configured: credential.configured,
+      writable: credential.writable,
     }
     if (
       next.configured === this.credential.configured
