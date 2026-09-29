@@ -1,0 +1,35 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "release": "lerna publish"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.15.0",
+      "onFail": "error"
+    },
+    "packageManager": [
+      {
+        "name": "pnpm",
+        "version": "^11.0.0",
+        "onFail": "ignore"
+      },
+      {
+        "name": "npm",
+        "onFail": "ignore"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@cyansalt/eslint-config": "^4.6.0",
+    "@cyansalt/tsconfig": "^3.0.2",
+    "@lerna-lite/cli": "^5.6.2",
+    "@lerna-lite/publish": "^5.6.2",
+    "@types/node": "^24.19.0",
+    "eslint": "^9.39.5",
+    "tsdown": "^0.23.0",
+    "typescript": "^6.0.3"
+  }
+}

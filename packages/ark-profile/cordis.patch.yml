@@ -1,0 +1,27 @@
+- id: llm-pi-ai
+  name: '@deepseek-ai/dsh-llm-pi-ai'
+  config:
+    providers:
+      ark:
+        displayName: Ark
+        api: openai-responses
+        apiKeyEnv: ARK_API_KEY
+        baseURL: https://ark.cn-beijing.volces.com/api/v3
+        models: []
+
+- insert:
+  - id: web-search-ark
+    name: '@cyansalt/dsh-web-search-ark'
+    config:
+      provider: ark
+
+  - id: ui-settings-ark
+    name: '@cyansalt/dsh-client-ui-settings-ark'
+    config:
+      bundle: '@cyansalt/dsh-ark-profile'
+      provider: ark
+
+- id: web
+  name: '@deepseek-ai/dsh-web'
+  config:
+    searchProvider: web-search-ark

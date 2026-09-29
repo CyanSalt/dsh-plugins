@@ -1,0 +1,7 @@
+import '@deepseek-ai/cordis-plugin-loader'
+import '@deepseek-ai/dsh-agent'
+import '@deepseek-ai/dsh-api-remotes/client'
+import '@deepseek-ai/dsh-client-locale/client'
+import '@deepseek-ai/dsh-client-ui-plugin-manager/client'
+import '@deepseek-ai/dsh-client-ui-renderer/client'
+import '@deepseek-ai/dsh-client-ui-settings/client'

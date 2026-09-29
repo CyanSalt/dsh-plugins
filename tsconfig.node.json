@@ -1,0 +1,19 @@
+{
+  "extends": "@cyansalt/tsconfig",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "composite": true,
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "**/scripts",
+    "**/*.config.js",
+    "**/*.config.ts"
+  ],
+  "exclude": [
+    "**/dist",
+    "**/node_modules"
+  ]
+}

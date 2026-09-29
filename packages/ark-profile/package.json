@@ -1,0 +1,48 @@
+{
+  "name": "@cyansalt/dsh-ark-profile",
+  "version": "0.1.0-0",
+  "description": "Ark models, web-search tools and Web UI in one bundle",
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "icon": "./assets/icon.svg",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    },
+    "./locale/*.json": "./locale/*.json",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "assets",
+    "dist",
+    "locale",
+    "cordis.patch.yml"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "prepack": "tsdown"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "CyanSalt",
+  "license": "ISC",
+  "dependencies": {
+    "@cyansalt/dsh-client-ui-settings-ark": "workspace:*",
+    "@cyansalt/dsh-web-search-ark": "workspace:*"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.4",
+    "@deepseek-ai/dsh-llm-pi-ai": ">=0.1.7-rc.2"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "catalog:"
+  }
+}

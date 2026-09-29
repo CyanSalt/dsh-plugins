@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/ark-profile" },
+    { "path": "./packages/ui-settings-ark" },
+    { "path": "./packages/web-search-ark" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
