@@ -15,6 +15,7 @@
       "types": "./dist/client.d.ts",
       "default": "./dist/client.js"
     },
+    "./locale/*.json": "./locale/*.json",
     "./package.json": "./package.json"
   },
   "files": [

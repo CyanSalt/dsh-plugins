@@ -1,6 +1,6 @@
 import { defineConfig } from 'tsdown'
-import { dshClient } from './scripts/dsh-client.ts'
 import pkg from './package.json' with { type: 'json' }
+import { dshClient } from './scripts/dsh-client.ts'
 
 export default defineConfig([
   {
@@ -11,7 +11,7 @@ export default defineConfig([
   },
   {
     entry: [
-      'src/client.ts',
+      'src/client.tsx',
     ],
     plugins: [
       dshClient(pkg),

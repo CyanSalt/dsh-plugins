@@ -5,7 +5,7 @@ import pkg from '../package.json' with { type: 'json' }
 export const name = 'ui-settings-ark'
 
 export const Config = z.object({
-  bundle: z.string().default(pkg.name),
+  bundle: z.string().default(pkg.name).volatile(),
   provider: z.string().default('ark').volatile(),
 })
 export type Config = ReturnType<typeof Config>

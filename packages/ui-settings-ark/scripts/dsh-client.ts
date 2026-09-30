@@ -16,7 +16,9 @@ export function dshClient(pkg: PackageManifest): TsdownPlugin {
           js: '.js',
         }),
         deps: {
-          neverBundle: true,
+          neverBundle: (id: string) => {
+            return id === 'react' || id.startsWith('@deepseek-ai/')
+          },
         },
         outputOptions: {
           banner: `

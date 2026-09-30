@@ -1,7 +1,8 @@
 {
   "extends": "@cyansalt/tsconfig",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "jsx": "react"
   },
   "include": [
     "src"

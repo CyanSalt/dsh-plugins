@@ -1,5 +1,5 @@
 import type { Options as WebSearchArkOptions } from '@cyansalt/dsh-web-search-ark'
-import type { Context, Volatile } from '@deepseek-ai/cordis'
+import type { Context } from '@deepseek-ai/cordis'
 import type { PluginConfigViewProps } from '@deepseek-ai/dsh-client-ui-plugin-manager/client'
 import type { SettingsFieldState, SettingsFormShell } from '@deepseek-ai/dsh-client-ui-primitives'
 import {
@@ -14,8 +14,10 @@ import type { ConfigForm } from '@deepseek-ai/dsh-client-ui-settings/client'
 import type { TranslateNS } from '@deepseek-ai/dsh-client-ui-slots'
 import type { Options as PiAiOptions } from '@deepseek-ai/dsh-llm-pi-ai'
 import type { FC } from 'react'
-import { createElement as h } from 'react'
+import React from 'react'
+import { createEffectReconciler } from './utils/effect-reconciler'
 import { SettingsFormPathScope } from './utils/settings-form-path-scope'
+import type { Options as ArkSettingsOptions } from './index'
 
 const NS = 'ui-settings-ark'
 
@@ -63,6 +65,7 @@ const zh = {
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
     [NS]: keyof typeof en & keyof typeof zh,
   }
 }
@@ -101,73 +104,74 @@ const ArkSettingsCard: FC<ArkSettingsCardProps> = (props) => {
   }
 
   const state = props.useArkSettingsCard((snapshot) => snapshot)
-  return h(SettingsForm, {
-    labels: {
-      unavailable: t('unavailable'),
-      readOnly: t('readOnly'),
-      saveFailed: t('saveFailed'),
-      save: t('save'),
-      saving: t('saving'),
-    },
-    state,
-    onSave: props.save,
-    onDiscard: props.discard,
-    children: [
-      h(SettingsValueField, {
-        id: 'plugin-config-ark-base-url',
-        label: t('baseURL'),
-        hint: t('baseURLHint'),
-        overriddenLabel: t('overridden'),
-        resetLabel: t('reset'),
-        invalidLabel: t('invalidText'),
-        disabled: !state.writable,
-        ...state.baseURL,
-        onEdit: (text) => {
+  return (
+    <SettingsForm
+      labels={{
+        unavailable: t('unavailable'),
+        readOnly: t('readOnly'),
+        saveFailed: t('saveFailed'),
+        save: t('save'),
+        saving: t('saving'),
+      }}
+      state={state}
+      onSave={props.save}
+      onDiscard={props.discard}
+    >
+      <SettingsValueField
+        id='plugin-config-ark-base-url'
+        label={t('baseURL')}
+        hint={t('baseURLHint')}
+        overriddenLabel={t('overridden')}
+        resetLabel={t('reset')}
+        invalidLabel={t('invalidText')}
+        disabled={!state.writable}
+        {...state.baseURL}
+        onEdit={(text) => {
           props.edit('baseURL', text)
-        },
-        onReset: () => {
+        }}
+        onReset={() => {
           props.resetField('baseURL')
-        },
-      }),
-      h(SettingsSecretField, {
-        id: 'plugin-config-ark-api-key',
-        label: t('apiKey'),
-        hint: t('apiKeyHint'),
-        disabled: !state.apiKeyWritable,
-        text: state.apiKey.text,
-        configured: state.apiKeyConfigured,
-        stateLabel: state.apiKeyConfigured
+        }}
+      />
+      <SettingsSecretField
+        id='plugin-config-ark-api-key'
+        label={t('apiKey')}
+        hint={t('apiKeyHint')}
+        disabled={!state.apiKeyWritable}
+        text={state.apiKey.text}
+        configured={state.apiKeyConfigured}
+        stateLabel={state.apiKeyConfigured
           ? t('apiKeyConfigured')
-          : t('apiKeyMissing'),
-        onEdit: (text) => {
+          : t('apiKeyMissing')}
+        onEdit={(text) => {
           props.edit(FIELD_API_KEY, text)
-        },
-      }),
-      h(SettingsValueField, {
-        id: 'plugin-config-ark-max-keyword',
-        label: t('maxKeyword'),
-        hint: t('maxKeywordHint'),
-        overriddenLabel: t('overridden'),
-        resetLabel: t('reset'),
-        invalidLabel: t('invalidNumber'),
-        numeric: true,
-        disabled: !state.writable,
-        ...state.maxKeyword,
-        onEdit: (text) => {
+        }}
+      />
+      <SettingsValueField
+        id='plugin-config-ark-max-keyword'
+        label={t('maxKeyword')}
+        hint={t('maxKeywordHint')}
+        overriddenLabel={t('overridden')}
+        resetLabel={t('reset')}
+        invalidLabel={t('invalidNumber')}
+        numeric
+        disabled={!state.writable}
+        {...state.maxKeyword}
+        onEdit={(text) => {
           props.edit('maxKeyword', text)
-        },
-        onReset: () => {
+        }}
+        onReset={() => {
           props.resetField('maxKeyword')
-        },
-      }),
-    ],
-  })
+        }}
+      />
+    </SettingsForm>
+  )
 }
 
 class ArkSettingsCardController {
 
   private readonly providerScope: SettingsFormPathScope<ProviderProfile>
-  private readonly provider: Volatile<string>
+  private provider: string
   private readonly providerForm: SettingsFormModel<ProviderProfile>
   private readonly webSearchForm: SettingsFormModel<WebSearchArkOptions>
   private readonly formEntries: readonly SettingsFormEntry[]
@@ -183,13 +187,13 @@ class ArkSettingsCardController {
     piAiScope: ConfigForm<PiAiOptions>,
     webSearchScope: ConfigForm<WebSearchArkOptions>,
     ctx: Context,
-    provider: Volatile<string>,
+    provider: string,
   ) {
     this.ctx = ctx
     this.provider = provider
     this.providerScope = new SettingsFormPathScope(piAiScope, [
       'providers',
-      provider.get(),
+      provider,
     ])
     this.providerForm = new SettingsFormModel(this.providerScope, [
       settingsTextField('baseURL'),
@@ -272,8 +276,10 @@ class ArkSettingsCardController {
     }
   }
 
-  refreshProvider(): void {
-    this.providerScope.setPath(['providers', this.provider.get()])
+  refreshProvider(provider: string): void {
+    if (provider === this.provider) return
+    this.provider = provider
+    this.providerScope.setPath(['providers', provider])
     this.credential = {
       configured: false,
       writable: true,
@@ -347,47 +353,45 @@ export const inject = [
 ]
 
 export function apply(ctx: Context): void {
-  const { bundle, provider } = ctx.fiber.config
-  const card = new ArkSettingsCardController(
-    ctx.configForms.get<PiAiOptions>('llm-pi-ai'),
-    ctx.configForms.get<WebSearchArkOptions>('web-search-ark'),
-    ctx,
-    provider,
-  )
   ctx.effect(
     () => ctx.locale.register(NS, { zh, en }),
     'ui-settings-ark: locale',
   )
   ctx.effect(
-    () => () => {
-      card.dispose()
-    },
-    'ui-settings-ark: form subscription',
-  )
-  ctx.effect(
-    () => ctx.on('loader/volatile-update', (paths) => {
-      if (paths.some((path) => path.length === 1 && path[0] === 'provider')) {
-        card.refreshProvider()
+    () => ctx.configForms.whileServed([NS], () => ctx.effect(function* () {
+      const configForm = ctx.configForms.get<ArkSettingsOptions>(NS)
+      const card = new ArkSettingsCardController(
+        ctx.configForms.get<PiAiOptions>('llm-pi-ai'),
+        ctx.configForms.get<WebSearchArkOptions>('web-search-ark'),
+        ctx,
+        configForm.getSnapshot().value?.provider ?? 'ark',
+      )
+      const slotEffect = createEffectReconciler(
+        () => [
+          configForm.getSnapshot().value?.bundle ?? '@cyansalt/dsh-client-ui-settings-ark',
+        ] as const,
+        (key) => ctx.slots.inject(
+          'plugins.bundle.config',
+          () => ctx.slots.register({
+            name: 'plugins.bundle.config',
+            key,
+            locale: NS,
+            inject: () => card.inject(),
+          }, ArkSettingsCard),
+        ),
+      )
+      yield slotEffect.start()
+      yield () => {
+        card.dispose()
       }
-    }),
-    'ui-settings-ark: provider updates',
-  )
-  ctx.effect(
-    () => ctx.remote.$on('credentials/reference-updated', (reference: string) => {
-      card.refreshCredential(reference)
-    }),
-    'ui-settings-ark: credential invalidations',
-  )
-  ctx.effect(
-    () => ctx.slots.inject(
-      'plugins.bundle.config',
-      () => ctx.slots.register({
-        name: 'plugins.bundle.config',
-        key: bundle,
-        locale: NS,
-        inject: () => card.inject(),
-      }, ArkSettingsCard),
-    ),
+      yield ctx.remote.$on('credentials/reference-updated', (reference: string) => {
+        card.refreshCredential(reference)
+      })
+      yield configForm.subscribe(() => {
+        card.refreshProvider(configForm.getSnapshot().value?.provider ?? 'ark')
+        slotEffect.trigger()
+      })
+    }, 'ui-settings-ark: active config card')),
     'ui-settings-ark: plugin configuration',
   )
 }
