@@ -48,12 +48,12 @@ The Ark PiAI provider profile defaults are:
 | --- | --- |
 | `apiKeyEnv` | `ARK_API_KEY` |
 | `baseURL` | `https://ark.cn-beijing.volces.com/api/v3` |
-| `models` | `[]` |
+| `models` | `[{ id: unknown, name: Unknown }]` |
 
-The generic profile intentionally has no fixed model catalog because Ark
-deployments use deployment-specific model or endpoint IDs. `models: []` keeps
-the declared route editable until a deployment supplies a model catalog. The
-browser settings card does not create or replace models.
+Ark deployments use deployment-specific model or endpoint IDs. The generic
+profile includes an `unknown` placeholder so the Ark provider remains visible
+on model configuration surfaces until the deployment supplies its actual model
+catalog. The browser settings card does not create or replace models.
 
 `web-search-ark.maxKeyword` is optional and defaults to unset.
 

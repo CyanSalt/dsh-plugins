@@ -34,7 +34,8 @@
 - `apiKeyEnv` is optional for `llm-pi-ai`; without it, the settings card cannot
   configure a key and `web-search-ark` reports unavailable.
 - Ark profile defaults set `apiKeyEnv` to `ARK_API_KEY`, `baseURL` to
-  `https://ark.cn-beijing.volces.com/api/v3`, and `models` to `[]`.
+  `https://ark.cn-beijing.volces.com/api/v3`, and include an `unknown` model
+  displayed as `Unknown`.
 - `maxKeyword` is an optional `web-search-ark` configuration field.
 - Treat changes to these identifiers as migrations and document them first.
 

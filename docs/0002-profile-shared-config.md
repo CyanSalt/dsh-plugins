@@ -14,7 +14,8 @@ second configuration service.
 
 The profile bundle mounts these rows:
 
-1. `llm-pi-ai`, with an `ark` profile whose `models` default to `[]`.
+1. `llm-pi-ai`, with an `ark` profile containing an `unknown` placeholder
+   model displayed as `Unknown`.
 2. `web-search-ark`, with `provider: ark`.
 3. `ui-settings-ark`, with `provider: ark` and
    `bundle: @cyansalt/dsh-ark-profile`.
@@ -32,9 +33,10 @@ and web-search changes as separate revision-fenced writes.
 
 ## Consequences
 
-The generic Ark profile has no baked-in model catalog. Ark deployments use
-deployment-specific model or endpoint IDs, so the profile defaults `models` to
-an empty list and lets an operator or specialized profile supply models.
+Ark deployments use deployment-specific model or endpoint IDs. The generic
+profile includes an `unknown` placeholder so Ark appears on model configuration
+surfaces, while an operator or specialized profile can replace it with actual
+models.
 
 Specialized profiles such as Star LM API reuse the same web-search and browser
 settings packages, but configure `providers.star-lm-api`, pass

@@ -7,7 +7,9 @@
         api: openai-responses
         apiKeyEnv: ARK_API_KEY
         baseURL: https://ark.cn-beijing.volces.com/api/v3
-        models: []
+        models:
+          - id: unknown
+            name: Unknown
 
 - insert:
   - id: web-search-ark
