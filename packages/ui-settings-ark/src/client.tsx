@@ -84,8 +84,25 @@ interface ArkSettingsProjection extends SettingsFormShell {
   apiKeyConfigured: boolean,
   apiKeyWritable: boolean,
   baseURL: SettingsFieldState,
+  baseURLWritable: boolean,
   hiddenFields: ArkSettingsOptions['hiddenFields'],
   maxKeyword: SettingsFieldState,
+  maxKeywordWritable: boolean,
+}
+
+function mergeSettingsFormShells(
+  shells: readonly SettingsFormShell[],
+): SettingsFormShell {
+  const availableShells = shells.filter(shell => shell.available)
+  const writableShells = availableShells.filter(shell => shell.writable)
+  return {
+    available: availableShells.length > 0,
+    writable: writableShells.length > 0,
+    dirty: writableShells.some(shell => shell.dirty),
+    invalid: writableShells.some(shell => shell.invalid),
+    saving: availableShells.some(shell => shell.saving),
+    failed: availableShells.some(shell => shell.failed),
+  }
 }
 
 interface ArkSettingsCardProps {
@@ -127,7 +144,7 @@ const ArkSettingsCard: FC<ArkSettingsCardProps> = (props) => {
           overriddenLabel={t('overridden')}
           resetLabel={t('reset')}
           invalidLabel={t('invalidText')}
-          disabled={!state.writable}
+          disabled={!state.baseURLWritable}
           {...state.baseURL}
           onEdit={(text) => {
             props.edit('baseURL', text)
@@ -162,7 +179,7 @@ const ArkSettingsCard: FC<ArkSettingsCardProps> = (props) => {
           resetLabel={t('reset')}
           invalidLabel={t('invalidNumber')}
           numeric
-          disabled={!state.writable}
+          disabled={!state.maxKeywordWritable}
           {...state.maxKeyword}
           onEdit={(text) => {
             props.edit('maxKeyword', text)
@@ -237,29 +254,21 @@ class ArkSettingsCardController {
   }
 
   private projection(): ArkSettingsProjection {
+    const providerShell = this.providerForm.shell()
+    const webSearchShell = this.webSearchForm.shell()
     return {
-      ...this.shell(),
+      ...mergeSettingsFormShells([providerShell, webSearchShell]),
       apiKey: this.getField(FIELD_API_KEY),
       apiKeyConfigured: this.credential.configured,
-      apiKeyWritable: this.apiKeyEnv() !== undefined && this.credential.writable,
+      apiKeyWritable: providerShell.available
+        && providerShell.writable
+        && this.apiKeyEnv() !== undefined
+        && this.credential.writable,
       baseURL: this.getField('baseURL'),
+      baseURLWritable: providerShell.available && providerShell.writable,
       hiddenFields: this.hiddenFields,
       maxKeyword: this.getField('maxKeyword'),
-    }
-  }
-
-  private shell(): SettingsFormShell {
-    const shells = [
-      this.providerForm.shell(),
-      this.webSearchForm.shell(),
-    ]
-    return {
-      available: shells.every((shell) => shell.available),
-      writable: shells.every((shell) => shell.writable),
-      dirty: shells.some((shell) => shell.dirty),
-      invalid: shells.some((shell) => shell.invalid),
-      saving: shells.some((shell) => shell.saving),
-      failed: shells.some((shell) => shell.failed),
+      maxKeywordWritable: webSearchShell.available && webSearchShell.writable,
     }
   }
 
@@ -318,10 +327,16 @@ class ArkSettingsCardController {
         this.formFor(field).actions().resetField(field)
       },
       save: () => {
-        Promise.all([
-          this.providerForm.save(),
-          this.webSearchForm.save(),
-        ])
+        const forms: readonly SettingsFormModel<unknown>[] = [
+          this.providerForm,
+          this.webSearchForm,
+        ]
+        Promise.all(
+          forms.filter(form => {
+            const shell = form.shell()
+            return shell.available && shell.writable
+          }).map(form => form.save()),
+        )
       },
       discard: () => {
         this.providerForm.actions().discard()
