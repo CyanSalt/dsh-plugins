@@ -7,6 +7,11 @@ export const name = 'ui-settings-ark'
 export const Config = z.object({
   bundle: z.string().default(pkg.name).volatile(),
   provider: z.string().default('ark').volatile(),
+  hiddenFields: z.array(z.union([
+    'baseURL',
+    'apiKey',
+    'maxKeyword',
+  ])).default([]).volatile(),
 })
 export type Config = ReturnType<typeof Config>
 export type Options = { [K in keyof Config]?: Config[K] extends Volatile<infer T> ? T : never }

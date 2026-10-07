@@ -84,6 +84,7 @@ interface ArkSettingsProjection extends SettingsFormShell {
   apiKeyConfigured: boolean,
   apiKeyWritable: boolean,
   baseURL: SettingsFieldState,
+  hiddenFields: ArkSettingsOptions['hiddenFields'],
   maxKeyword: SettingsFieldState,
 }
 
@@ -104,6 +105,7 @@ const ArkSettingsCard: FC<ArkSettingsCardProps> = (props) => {
   }
 
   const state = props.useArkSettingsCard((snapshot) => snapshot)
+  const hiddenFields = state.hiddenFields ?? []
   return (
     <SettingsForm
       labels={{
@@ -117,53 +119,59 @@ const ArkSettingsCard: FC<ArkSettingsCardProps> = (props) => {
       onSave={props.save}
       onDiscard={props.discard}
     >
-      <SettingsValueField
-        id='plugin-config-ark-base-url'
-        label={t('baseURL')}
-        hint={t('baseURLHint')}
-        overriddenLabel={t('overridden')}
-        resetLabel={t('reset')}
-        invalidLabel={t('invalidText')}
-        disabled={!state.writable}
-        {...state.baseURL}
-        onEdit={(text) => {
-          props.edit('baseURL', text)
-        }}
-        onReset={() => {
-          props.resetField('baseURL')
-        }}
-      />
-      <SettingsSecretField
-        id='plugin-config-ark-api-key'
-        label={t('apiKey')}
-        hint={t('apiKeyHint')}
-        disabled={!state.apiKeyWritable}
-        text={state.apiKey.text}
-        configured={state.apiKeyConfigured}
-        stateLabel={state.apiKeyConfigured
-          ? t('apiKeyConfigured')
-          : t('apiKeyMissing')}
-        onEdit={(text) => {
-          props.edit(FIELD_API_KEY, text)
-        }}
-      />
-      <SettingsValueField
-        id='plugin-config-ark-max-keyword'
-        label={t('maxKeyword')}
-        hint={t('maxKeywordHint')}
-        overriddenLabel={t('overridden')}
-        resetLabel={t('reset')}
-        invalidLabel={t('invalidNumber')}
-        numeric
-        disabled={!state.writable}
-        {...state.maxKeyword}
-        onEdit={(text) => {
-          props.edit('maxKeyword', text)
-        }}
-        onReset={() => {
-          props.resetField('maxKeyword')
-        }}
-      />
+      {!hiddenFields.includes('baseURL') && (
+        <SettingsValueField
+          id='plugin-config-ark-base-url'
+          label={t('baseURL')}
+          hint={t('baseURLHint')}
+          overriddenLabel={t('overridden')}
+          resetLabel={t('reset')}
+          invalidLabel={t('invalidText')}
+          disabled={!state.writable}
+          {...state.baseURL}
+          onEdit={(text) => {
+            props.edit('baseURL', text)
+          }}
+          onReset={() => {
+            props.resetField('baseURL')
+          }}
+        />
+      )}
+      {!hiddenFields.includes(FIELD_API_KEY) && (
+        <SettingsSecretField
+          id='plugin-config-ark-api-key'
+          label={t('apiKey')}
+          hint={t('apiKeyHint')}
+          disabled={!state.apiKeyWritable}
+          text={state.apiKey.text}
+          configured={state.apiKeyConfigured}
+          stateLabel={state.apiKeyConfigured
+            ? t('apiKeyConfigured')
+            : t('apiKeyMissing')}
+          onEdit={(text) => {
+            props.edit(FIELD_API_KEY, text)
+          }}
+        />
+      )}
+      {!hiddenFields.includes('maxKeyword') && (
+        <SettingsValueField
+          id='plugin-config-ark-max-keyword'
+          label={t('maxKeyword')}
+          hint={t('maxKeywordHint')}
+          overriddenLabel={t('overridden')}
+          resetLabel={t('reset')}
+          invalidLabel={t('invalidNumber')}
+          numeric
+          disabled={!state.writable}
+          {...state.maxKeyword}
+          onEdit={(text) => {
+            props.edit('maxKeyword', text)
+          }}
+          onReset={() => {
+            props.resetField('maxKeyword')
+          }}
+        />
+      )}
     </SettingsForm>
   )
 }
@@ -172,6 +180,7 @@ class ArkSettingsCardController {
 
   private readonly providerScope: SettingsFormPathScope<ProviderProfile>
   private provider: string
+  private hiddenFields: ArkSettingsOptions['hiddenFields']
   private readonly providerForm: SettingsFormModel<ProviderProfile>
   private readonly webSearchForm: SettingsFormModel<WebSearchArkOptions>
   private readonly formEntries: readonly SettingsFormEntry[]
@@ -188,9 +197,11 @@ class ArkSettingsCardController {
     webSearchScope: ConfigForm<WebSearchArkOptions>,
     ctx: Context,
     provider: string,
+    hiddenFields: ArkSettingsOptions['hiddenFields'],
   ) {
     this.ctx = ctx
     this.provider = provider
+    this.hiddenFields = hiddenFields
     this.providerScope = new SettingsFormPathScope(piAiScope, [
       'providers',
       provider,
@@ -232,6 +243,7 @@ class ArkSettingsCardController {
       apiKeyConfigured: this.credential.configured,
       apiKeyWritable: this.apiKeyEnv() !== undefined && this.credential.writable,
       baseURL: this.getField('baseURL'),
+      hiddenFields: this.hiddenFields,
       maxKeyword: this.getField('maxKeyword'),
     }
   }
@@ -286,6 +298,12 @@ class ArkSettingsCardController {
     }
     this.store.set(this.projection())
     this.readCredential()
+  }
+
+  refreshHiddenFields(hiddenFields: ArkSettingsOptions['hiddenFields']): void {
+    if (hiddenFields === this.hiddenFields) return
+    this.hiddenFields = hiddenFields
+    this.store.set(this.projection())
   }
 
   inject() {
@@ -360,11 +378,13 @@ export function apply(ctx: Context): void {
   ctx.effect(
     () => ctx.configForms.whileServed([NS], () => ctx.effect(function* () {
       const configForm = ctx.configForms.get<ArkSettingsOptions>(NS)
+      const initialConfig = configForm.getSnapshot().value
       const card = new ArkSettingsCardController(
         ctx.configForms.get<PiAiOptions>('llm-pi-ai'),
         ctx.configForms.get<WebSearchArkOptions>('web-search-ark'),
         ctx,
-        configForm.getSnapshot().value?.provider ?? 'ark',
+        initialConfig?.provider ?? 'ark',
+        initialConfig?.hiddenFields,
       )
       const slotEffect = createEffectReconciler(
         () => [
@@ -388,7 +408,9 @@ export function apply(ctx: Context): void {
         card.refreshCredential(reference)
       })
       yield configForm.subscribe(() => {
-        card.refreshProvider(configForm.getSnapshot().value?.provider ?? 'ark')
+        const config = configForm.getSnapshot().value
+        card.refreshProvider(config?.provider ?? 'ark')
+        card.refreshHiddenFields(config?.hiddenFields)
         slotEffect.trigger()
       })
     }, 'ui-settings-ark: active config card')),
