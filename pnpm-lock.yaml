@@ -101,13 +101,12 @@ importers:
       '@cyansalt/dsh-web-search-ark':
         specifier: workspace:*
         version: link:../web-search-ark
+      '@deepseek-ai/cordis':
+        specifier: '>=4.0.4'
+        version: 4.0.4(@deepseek-ai/cordis-plugin-include@1.0.9)(@deepseek-ai/cordis-plugin-loader@1.0.5)
       '@deepseek-ai/dsh-llm-pi-ai':
         specifier: '>=0.1.7-rc.2'
         version: 0.1.7-rc.2(c476b3a49dd0e02b7ef5f187f463948d)
-    devDependencies:
-      '@deepseek-ai/cordis':
-        specifier: 'catalog:'
-        version: 4.0.4(@deepseek-ai/cordis-plugin-include@1.0.9)(@deepseek-ai/cordis-plugin-loader@1.0.5)
 
   packages/ui-settings-ark:
     dependencies:
