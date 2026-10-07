@@ -7,7 +7,6 @@ export const name = 'web-search-ark'
 export const inject = ['agentDefaultModel', 'loader', 'web']
 
 export const Config = z.object({
-  id: z.string().default('web-search-ark'),
   provider: z.string().default('ark').volatile(),
   model: z.string().volatile(),
   maxKeyword: z.number().step(1).min(1).max(50).volatile(),
@@ -25,7 +24,7 @@ function getPluginConfig<T>(ctx: Context, id: string) {
 }
 
 export function apply(ctx: Context, config: Config) {
-  ctx.web.registerSearchProvider(new ArkWebSearchProvider(config.id, ctx, () => {
+  ctx.web.registerSearchProvider(new ArkWebSearchProvider(ctx.loader.locate() ?? name, ctx, () => {
     const provider = config.provider.get()
     const piAiConfig = getPluginConfig<PiAiConfig>(ctx, 'llm-pi-ai')
     const profiles = piAiConfig?.providers.get()

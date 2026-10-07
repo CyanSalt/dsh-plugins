@@ -41,5 +41,7 @@ models.
 Specialized profiles such as Star LM API reuse the same web-search and browser
 settings packages, but configure `providers.star-lm-api`, pass
 `provider: star-lm-api` to both packages, and set `ui-settings-ark.bundle` to
-the specialized profile's package name. Bundle dependencies do not apply patches
-recursively, so every profile patch explicitly mounts its rows.
+the specialized profile's package name. Because the browser settings package
+cannot discover a dynamic Host entry ID, these profiles keep the web-search row
+ID at `web-search-ark`. Bundle dependencies do not apply patches recursively,
+so every profile patch explicitly mounts its rows.

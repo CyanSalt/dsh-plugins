@@ -19,13 +19,18 @@
 - Shared Ark values belong to `llm-pi-ai.providers.<provider>`. The web-search
   and browser settings components must receive the same `provider` config and
   derive connection values from that provider profile.
+- `web-search-ark` derives its provider id from its Loader entry and falls back
+  to `web-search-ark` outside a Loader entry.
 - `maxKeyword` belongs to the `web-search-ark` configuration, not to a PiAI
   provider profile.
 
 ## Stable Contracts
 
 - The LLM provider id is `ark`.
-- The web search provider id is `web-search-ark`.
+- The default web search provider id is `web-search-ark`.
+- Profiles using `ui-settings-ark` must keep the web-search entry id at
+  `web-search-ark`; the browser settings API cannot discover a companion
+  plugin's dynamic Host entry id.
 - `web-search-ark` accepts a `provider` field defaulting to `ark`.
 - `ui-settings-ark` accepts a `provider` field defaulting to `ark` and a
   `bundle` field defaulting to `@cyansalt/dsh-client-ui-settings-ark`;

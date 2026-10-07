@@ -40,7 +40,12 @@ only controls the web-search tool request.
 ## Stable Identifiers
 
 - LLM provider: `ark`
-- Web search provider: `web-search-ark`
+- Default web search provider: `web-search-ark`
+
+The server-side web-search provider derives its ID from its Loader entry and
+uses `web-search-ark` only as the fallback for programmatic mounts. The browser
+settings integration cannot discover dynamic Host entry IDs, so profiles that
+include it keep the web-search entry ID at `web-search-ark`.
 
 The Ark PiAI provider profile defaults are:
 
