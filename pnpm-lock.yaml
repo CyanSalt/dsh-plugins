@@ -102,10 +102,10 @@ importers:
   packages/ark-profile:
     dependencies:
       '@cyansalt/dsh-client-ui-settings-ark':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui-settings-ark
       '@cyansalt/dsh-web-search-ark':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../web-search-ark
       '@deepseek-ai/cordis':
         specifier: '>=4.0.3'
@@ -121,7 +121,7 @@ importers:
         version: 3.18.4
     devDependencies:
       '@cyansalt/dsh-web-search-ark':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../web-search-ark
       '@deepseek-ai/cordis':
         specifier: 'catalog:'

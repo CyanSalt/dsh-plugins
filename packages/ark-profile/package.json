@@ -49,8 +49,8 @@
   "author": "CyanSalt",
   "license": "ISC",
   "dependencies": {
-    "@cyansalt/dsh-client-ui-settings-ark": "workspace:*",
-    "@cyansalt/dsh-web-search-ark": "workspace:*"
+    "@cyansalt/dsh-client-ui-settings-ark": "workspace:^",
+    "@cyansalt/dsh-web-search-ark": "workspace:^"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": ">=4.0.3",
