@@ -1,6 +1,6 @@
 # dsh-plugins
 
-[![AI-DECLARATION: copilot](https://img.shields.io/badge/%E4%B7%A6%20AI--DECLARATION-copilot-fee2e2?labelColor=fee2e2)](AI-DECLARATION.md)
+[![AI-DECLARATION: copilot](https://img.shields.io/badge/%E4%B7%A6%20AI--DECLARATION-copilot-fee2e2?labelColor=fee2e2)](https://ai-declaration.md)
 
 `dsh-plugins` is a monorepo for independently installable DeepSeek Harness
 (DSH) plugins, profiles, and their supporting packages maintained by CyanSalt.
