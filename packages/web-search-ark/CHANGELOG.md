@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/CyanSalt/dsh-plugins/compare/%40cyansalt%2Fdsh-web-search-ark%400.1.2...%40cyansalt%2Fdsh-web-search-ark%400.1.3) (2026-10-08)
+
+### Bug Fixes
+
+* bump web-search-ark ([27830d3](https://github.com/CyanSalt/dsh-plugins/commit/27830d325d75b6092f8e7569efd503ca8f7e8be2))
+
 ## [0.1.2](https://github.com/CyanSalt/dsh-plugins/compare/%40cyansalt%2Fdsh-web-search-ark%400.1.1...%40cyansalt%2Fdsh-web-search-ark%400.1.2) (2026-10-08)
 
 ### Bug Fixes
