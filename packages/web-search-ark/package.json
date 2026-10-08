@@ -28,7 +28,8 @@
   "author": "CyanSalt",
   "license": "ISC",
   "dependencies": {
-    "@deepseek-ai/schemastery": "^3.18.4"
+    "@deepseek-ai/schemastery": "^3.18.4",
+    "lodash-es": "catalog:"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": ">=4.0.3",
@@ -45,6 +46,7 @@
     "@deepseek-ai/dsh-credentials": "catalog:",
     "@deepseek-ai/dsh-launch-environment": "catalog:",
     "@deepseek-ai/dsh-llm-pi-ai": "catalog:",
-    "@deepseek-ai/dsh-web": "catalog:"
+    "@deepseek-ai/dsh-web": "catalog:",
+    "@types/lodash-es": "catalog:"
   }
 }

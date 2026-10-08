@@ -3,6 +3,7 @@ import { credentialRef } from '@deepseek-ai/dsh-credentials'
 import { launchEnvironmentOf } from '@deepseek-ai/dsh-launch-environment'
 import type { WebSearchProvider, WebSearchRequest, WebSearchResult } from '@deepseek-ai/dsh-web'
 import { WebError } from '@deepseek-ai/dsh-web'
+import { isObjectLike } from 'lodash-es'
 
 export interface ArkWebSearchProviderOptions {
   apiKeyEnv?: string,
@@ -124,28 +125,33 @@ function mapResponse(payload: unknown) {
     throw new WebError('Ark returned an invalid web search response', 'WEB_PROVIDER_ERROR')
   }
 
-  const output = Array.isArray(payload.output) ? payload.output : []
+  const response = payload as Record<string, unknown>
+  const output = Array.isArray(response.output) ? response.output : []
   const sources: { url: string, title?: string, snippet?: string }[] = []
   const seen = new Set<string>()
   const text: string[] = []
   let searched = false
 
-  for (const item of output) {
-    if (!isObjectLike(item)) continue
+  for (const itemValue of output) {
+    if (!isObjectLike(itemValue)) continue
+    const item = itemValue as Record<string, unknown>
     if (item.type === 'web_search_call') {
       searched = true
       addSources(sources, seen, item.search_results as unknown[])
       addSources(sources, seen, item.sources as unknown[])
     }
     if (item.type !== 'message' || !Array.isArray(item.content)) continue
-    for (const block of item.content) {
-      if (!isObjectLike(block)) continue
+    for (const blockValue of item.content) {
+      if (!isObjectLike(blockValue)) continue
+      const block = blockValue as Record<string, unknown>
       if (block.type === 'output_text' && typeof block.text === 'string') {
         text.push(block.text)
       }
       if (!Array.isArray(block.annotations)) continue
-      for (const annotation of block.annotations) {
-        if (!isObjectLike(annotation) || annotation.type !== 'url_citation') continue
+      for (const annotationValue of block.annotations) {
+        if (!isObjectLike(annotationValue)) continue
+        const annotation = annotationValue as Record<string, unknown>
+        if (annotation.type !== 'url_citation') continue
         addSource(sources, seen, annotation)
       }
     }
@@ -158,18 +164,14 @@ function mapResponse(payload: unknown) {
     )
   }
 
-  const content = typeof payload.output_text === 'string' && payload.output_text.length > 0
-    ? payload.output_text
+  const content = typeof response.output_text === 'string' && response.output_text.length > 0
+    ? response.output_text
     : text.join('\n')
   return {
     ...(content.length > 0 ? { content } : {}),
     sources,
     truncated: false,
   }
-}
-
-function isObjectLike(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
 }
 
 function addSources(
@@ -180,7 +182,7 @@ function addSources(
   if (!Array.isArray(candidates)) return
   for (const candidate of candidates) {
     if (isObjectLike(candidate)) {
-      addSource(sources, seen, candidate)
+      addSource(sources, seen, candidate as Record<string, unknown>)
     }
   }
 }

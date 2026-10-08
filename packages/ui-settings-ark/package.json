@@ -63,7 +63,9 @@
     "@deepseek-ai/dsh-client-ui-settings": "catalog:",
     "@deepseek-ai/dsh-client-ui-slots": "catalog:",
     "@deepseek-ai/dsh-llm-pi-ai": "catalog:",
+    "@types/lodash-es": "catalog:",
     "@types/react": "catalog:",
+    "lodash-es": "catalog:",
     "react": "catalog:"
   }
 }

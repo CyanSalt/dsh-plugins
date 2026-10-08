@@ -4,7 +4,7 @@ export interface EffectReconciler {
   dispose(): void,
 }
 
-function isEqual(
+function areDependenciesEqual(
   previous: readonly unknown[],
   next: readonly unknown[],
 ): boolean {
@@ -36,7 +36,7 @@ export function createEffectReconciler<T extends readonly unknown[]>(
       return
     }
     const next = getDependencies()
-    if (previous !== undefined && isEqual(previous, next)) return
+    if (previous !== undefined && areDependenciesEqual(previous, next)) return
 
     dirty = false
     disposing = true

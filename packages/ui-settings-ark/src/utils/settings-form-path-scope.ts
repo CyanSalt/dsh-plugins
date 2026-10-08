@@ -1,8 +1,5 @@
 import type { SettingsFormPathOp, SettingsFormScope, SettingsFormScopeSnapshot } from '@deepseek-ai/dsh-client-ui-primitives'
-
-function isObjectLike(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
-}
+import { isObjectLike } from 'lodash-es'
 
 export class SettingsFormPathScope<T> implements SettingsFormScope<T> {
 
@@ -47,7 +44,7 @@ export class SettingsFormPathScope<T> implements SettingsFormScope<T> {
     let value = source
     for (const segment of this.path) {
       if (!isObjectLike(value)) return undefined
-      value = value[segment]
+      value = (value as Record<string, unknown>)[segment]
     }
     return value as T | undefined
   }
