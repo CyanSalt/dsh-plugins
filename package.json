@@ -2,6 +2,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "lint": "eslint --fix './**/*.{js,ts}'",
+    "lint:ci": "eslint --max-warnings 0 './**/*.{js,ts}'",
     "release": "lerna publish"
   },
   "devEngines": {
