@@ -102,10 +102,10 @@ importers:
         specifier: workspace:*
         version: link:../web-search-ark
       '@deepseek-ai/cordis':
-        specifier: '>=4.0.4'
+        specifier: '>=4.0.3'
         version: 4.0.4(@deepseek-ai/cordis-plugin-include@1.0.9)(@deepseek-ai/cordis-plugin-loader@1.0.5)
       '@deepseek-ai/dsh-llm-pi-ai':
-        specifier: '>=0.1.7-rc.2'
+        specifier: '>=0.1.7-alpha.1'
         version: 0.1.7-rc.2(c476b3a49dd0e02b7ef5f187f463948d)
 
   packages/ui-settings-ark:
@@ -166,7 +166,7 @@ importers:
   packages/web-search-ark:
     dependencies:
       '@deepseek-ai/cordis':
-        specifier: '>=4.0.4'
+        specifier: '>=4.0.3'
         version: 4.0.4(@deepseek-ai/cordis-plugin-include@1.0.9)(@deepseek-ai/cordis-plugin-loader@1.0.5)
       '@deepseek-ai/schemastery':
         specifier: ^3.18.4
