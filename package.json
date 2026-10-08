@@ -4,7 +4,7 @@
   "scripts": {
     "lint": "eslint --fix './**/*.{js,ts}'",
     "lint:ci": "eslint --max-warnings 0 './**/*.{js,ts}'",
-    "release": "lerna publish --yes"
+    "release": "lerna publish --stage --yes"
   },
   "devEngines": {
     "runtime": {
