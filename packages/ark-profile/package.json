@@ -1,6 +1,6 @@
 {
   "name": "@cyansalt/dsh-ark-profile",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Ark models, web-search tools and Web UI in one bundle",
   "type": "module",
   "main": "./dist/index.mjs",

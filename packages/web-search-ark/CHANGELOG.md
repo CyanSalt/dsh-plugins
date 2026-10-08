@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://github.com/CyanSalt/dsh-plugins/compare/%40cyansalt%2Fdsh-web-search-ark%400.1.1...%40cyansalt%2Fdsh-web-search-ark%400.1.2) (2026-10-08)
+
+### Bug Fixes
+
+* resolve included Pi AI config ([faff17a](https://github.com/CyanSalt/dsh-plugins/commit/faff17ac4178e40099d97522debd751d143e058c))
+
 ## [0.1.1](https://github.com/CyanSalt/dsh-plugins/compare/%40cyansalt%2Fdsh-web-search-ark%400.1.0...%40cyansalt%2Fdsh-web-search-ark%400.1.1) (2026-10-08)
 
 ### Bug Fixes
