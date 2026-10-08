@@ -16,7 +16,7 @@ export type Options = { [K in keyof Config]?: Config[K] extends Volatile<infer T
 
 function getPluginConfig<T>(ctx: Context, id: string) {
   try {
-    const entry = ctx.loader.resolve(id)
+    const entry = ctx.loader.resolve(`include:${id}`)
     return entry.fiber?.config as T | undefined
   } catch {
     return undefined
