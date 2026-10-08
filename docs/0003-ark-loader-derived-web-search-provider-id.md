@@ -1,4 +1,6 @@
-# Loader-Derived Web Search Provider ID
+# Ark Loader-Derived Web-Search Provider ID
+
+> Scope: Ark package family
 
 ## Context
 
@@ -28,3 +30,8 @@ settings integration must keep their web-search entry ID and
 
 Supporting multiple browser settings instances requires DSH to pass Host entry
 identity through the client plugin or slot contract.
+
+## Related Decisions
+
+- [Ark package family architecture](0001-ark-package-architecture.md)
+- [Ark shared provider configuration](0002-ark-shared-provider-configuration.md)

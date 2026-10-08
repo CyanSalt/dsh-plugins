@@ -1,4 +1,6 @@
-# Profile Shared Configuration
+# Ark Shared Provider Configuration
+
+> Scope: Ark package family
 
 ## Context
 
@@ -31,6 +33,29 @@ header.
 The Host stores each entry independently, so the card stages and saves provider
 and web-search changes as separate revision-fenced writes.
 
+## Configuration Contracts
+
+The generic Ark profile supplies these PiAI provider defaults:
+
+| Field | Default |
+| --- | --- |
+| `apiKeyEnv` | `ARK_API_KEY` |
+| `baseURL` | `https://ark.cn-beijing.volces.com/api/v3` |
+| `models` | `[{ id: unknown, name: Unknown }]` |
+
+The supporting packages accept these options:
+
+| Package | Field | Default |
+| --- | --- | --- |
+| `web-search-ark` | `provider` | `ark` |
+| `web-search-ark` | `maxKeyword` | unset |
+| `ui-settings-ark` | `provider` | `ark` |
+| `ui-settings-ark` | `bundle` | `@cyansalt/dsh-client-ui-settings-ark` |
+
+`maxKeyword` belongs to the web-search configuration rather than the PiAI
+provider profile. A profile must pass its own package name as `bundle` so the
+settings card appears on that profile's detail page.
+
 ## Consequences
 
 Ark deployments use deployment-specific model or endpoint IDs. The generic
@@ -45,3 +70,8 @@ the specialized profile's package name. Because the browser settings package
 cannot discover a dynamic Host entry ID, these profiles keep the web-search row
 ID at `web-search-ark`. Bundle dependencies do not apply patches recursively,
 so every profile patch explicitly mounts its rows.
+
+## Related Decisions
+
+- [Ark package family architecture](0001-ark-package-architecture.md)
+- [Ark loader-derived web-search provider ID](0003-ark-loader-derived-web-search-provider-id.md)

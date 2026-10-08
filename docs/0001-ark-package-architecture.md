@@ -1,15 +1,21 @@
-# Package Architecture
+# Ark Package Family Architecture
+
+> Scope: Ark package family
 
 ## Context
 
-This repository migrates the Star LM API integration from
-`llm-star-lm-api` into independently installable DeepSeek Harness packages.
-The migration keeps the upstream HTTP protocol and model definitions while
-using Ark-specific package and configuration names.
+The Ark integration was the first package family added to `dsh-plugins`. It
+migrates the Star LM API integration from `llm-star-lm-api` into independently
+installable DeepSeek Harness packages. The migration keeps the upstream HTTP
+protocol and model definitions while using Ark-specific package and
+configuration names.
+
+`dsh-plugins` also hosts unrelated DSH plugins. This decision applies only to
+the Ark package family and does not define repository-wide provider behavior.
 
 ## Decision
 
-The repository contains a profile bundle and two included components:
+The Ark package family contains a profile bundle and two included components:
 
 | Package | Responsibility |
 | --- | --- |
@@ -47,33 +53,11 @@ uses `web-search-ark` only as the fallback for programmatic mounts. The browser
 settings integration cannot discover dynamic Host entry IDs, so profiles that
 include it keep the web-search entry ID at `web-search-ark`.
 
-The Ark PiAI provider profile defaults are:
+Changes to these identifiers are migrations and require an architecture
+decision before implementation.
 
-| Field | Default |
-| --- | --- |
-| `apiKeyEnv` | `ARK_API_KEY` |
-| `baseURL` | `https://ark.cn-beijing.volces.com/api/v3` |
-| `models` | `[{ id: unknown, name: Unknown }]` |
+## Related Decisions
 
-Ark deployments use deployment-specific model or endpoint IDs. The generic
-profile includes an `unknown` placeholder so the Ark provider remains visible
-on model configuration surfaces until the deployment supplies its actual model
-catalog. The browser settings card does not create or replace models.
-
-`web-search-ark.maxKeyword` is optional and defaults to unset.
-
-## Dependency Policy
-
-The root pnpm catalog pins Cordis and every DSH development dependency.
-Non-DSH dependencies remain explicit in their owning manifests. DSH
-development dependencies are pinned to `0.1.7-rc.2`, matching the API used by
-the source integration. Runtime contracts are peer dependencies with `>=`
-minimum versions.
-
-## Verification
-
-The repository validates:
-
-- JavaScript through TypeScript `checkJs`
-- repository style through ESLint
-- workspace dependency consistency through pnpm's frozen lockfile mode
+- [Ark shared provider configuration](0002-ark-shared-provider-configuration.md)
+- [Ark loader-derived web-search provider ID](0003-ark-loader-derived-web-search-provider-id.md)
+- [Plugin monorepo scope](0004-plugin-monorepo-scope.md)

@@ -1,48 +1,30 @@
 # Repository Guidelines
 
-## Language and Naming
+## Language and Documentation
 
 - Write technical documentation in English.
 - Use English kebab-case file names.
 - Record architecture decisions in `docs/<four-digit-number>-<summary>.md`.
+- Keep the package catalog in `README.md` current when packages are added,
+  removed, or renamed.
+- Keep `docs/README.md` current when architecture decisions are added, removed,
+  renamed, or superseded.
+- Put package-specific boundaries, identifiers, defaults, and configuration
+  contracts in the applicable architecture decision rather than in this file.
+- Review the decisions indexed by `docs/README.md` before changing an existing
+  package or cross-package contract.
 
-## Package Boundaries
+## Repository Scope
 
-- `packages/ark-profile` owns the Ark bundle composition and the shared Ark
-  provider defaults.
-- `packages/web-search-ark` owns the server-side web search provider.
-- `packages/ui-settings-ark` owns the browser settings integration.
-- Keep package-specific behavior in its owning package. Do not move runtime
-  implementations into the aggregate bundle.
-- A profile patch configures the Host's `llm-pi-ai` entry and explicitly mounts
-  `web-search-ark` and `ui-settings-ark`.
-- Shared Ark values belong to `llm-pi-ai.providers.<provider>`. The web-search
-  and browser settings components must receive the same `provider` config and
-  derive connection values from that provider profile.
-- `web-search-ark` derives its provider id from its Loader entry and falls back
-  to `web-search-ark` outside a Loader entry.
-- `maxKeyword` belongs to the `web-search-ark` configuration, not to a PiAI
-  provider profile.
-
-## Stable Contracts
-
-- The LLM provider id is `ark`.
-- The default web search provider id is `web-search-ark`.
-- Profiles using `ui-settings-ark` must keep the web-search entry id at
-  `web-search-ark`; the browser settings API cannot discover a companion
-  plugin's dynamic Host entry id.
-- `web-search-ark` accepts a `provider` field defaulting to `ark`.
-- `ui-settings-ark` accepts a `provider` field defaulting to `ark` and a
-  `bundle` field defaulting to `@cyansalt/dsh-client-ui-settings-ark`;
-  profiles must pass their own package name as `bundle` to render the card on
-  their detail page.
-- `apiKeyEnv` is optional for `llm-pi-ai`; without it, the settings card cannot
-  configure a key and `web-search-ark` reports unavailable.
-- Ark profile defaults set `apiKeyEnv` to `ARK_API_KEY`, `baseURL` to
-  `https://ark.cn-beijing.volces.com/api/v3`, and include an `unknown` model
-  displayed as `Unknown`.
-- `maxKeyword` is an optional `web-search-ark` configuration field.
-- Treat changes to these identifiers as migrations and document them first.
+- This repository is a monorepo for DSH plugins, profiles, and supporting
+  packages maintained by CyanSalt.
+- Do not assume that a contract defined for one package or package family
+  applies to another.
+- Keep package-specific behavior in its owning package. Composition packages
+  configure and mount their dependencies without absorbing their runtime
+  implementations.
+- Treat changes to published identifiers and configuration contracts as
+  migrations and document them before implementation.
 
 ## Dependencies and Validation
 
