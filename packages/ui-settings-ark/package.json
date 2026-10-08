@@ -1,6 +1,6 @@
 {
   "name": "@cyansalt/dsh-client-ui-settings-ark",
-  "version": "0.1.0-0",
+  "version": "0.1.0",
   "description": "Settings page of Ark plugins on the dsh web client's PLugins page",
   "type": "module",
   "main": "./dist/index.mjs",

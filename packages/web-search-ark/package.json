@@ -1,6 +1,6 @@
 {
   "name": "@cyansalt/dsh-web-search-ark",
-  "version": "0.1.0-0",
+  "version": "0.1.0",
   "description": "Ark web search provider for DeepSeek Harness",
   "type": "module",
   "main": "./dist/index.mjs",
