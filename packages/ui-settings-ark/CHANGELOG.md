@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/CyanSalt/dsh-plugins/compare/%40cyansalt%2Fdsh-client-ui-settings-ark%400.1.2...%40cyansalt%2Fdsh-client-ui-settings-ark%400.1.3) (2026-10-08)
+
+### Bug Fixes
+
+* dependency version ranges ([4d7c9e5](https://github.com/CyanSalt/dsh-plugins/commit/4d7c9e53206331de153bc49e5b1657792de4a2d3))
+
 ## [0.1.2](https://github.com/CyanSalt/dsh-plugins/compare/%40cyansalt%2Fdsh-client-ui-settings-ark%400.1.1...%40cyansalt%2Fdsh-client-ui-settings-ark%400.1.2) (2026-10-08)
 
 **Note:** Version bump only for package @cyansalt/dsh-client-ui-settings-ark
