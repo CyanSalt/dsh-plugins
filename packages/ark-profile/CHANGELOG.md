@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/CyanSalt/dsh-plugins/compare/%40cyansalt%2Fdsh-ark-profile%400.1.0...%40cyansalt%2Fdsh-ark-profile%400.1.1) (2026-10-08)
+
+### Bug Fixes
+
+* package metadata ([6190ae5](https://github.com/CyanSalt/dsh-plugins/commit/6190ae5844ad4a4dbfa5ddfa648a37e9afc136aa))
+
 # 0.1.0 (2026-10-08)
 
 ### Bug Fixes
