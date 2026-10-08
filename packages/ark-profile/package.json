@@ -32,6 +32,20 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CyanSalt/dsh-plugins",
+    "directory": "packages/ark-profile"
+  },
+  "bugs": {
+    "url": "https://github.com/CyanSalt/dsh-plugins/issues"
+  },
+  "homepage": "https://github.com/CyanSalt/dsh-plugins#readme",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin"
+  ],
   "author": "CyanSalt",
   "license": "ISC",
   "dependencies": {
