@@ -24,7 +24,7 @@ function getPluginConfig<T>(ctx: Context, id: string) {
 }
 
 export function apply(ctx: Context, config: Config) {
-  ctx.web.registerSearchProvider(new ArkWebSearchProvider(ctx.loader.locate() ?? name, ctx, () => {
+  ctx.web.registerSearchProvider(new ArkWebSearchProvider(name, ctx, () => {
     const provider = config.provider.get()
     const piAiConfig = getPluginConfig<PiAiConfig>(ctx, 'llm-pi-ai')
     const profiles = piAiConfig?.providers.get()

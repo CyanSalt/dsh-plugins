@@ -21,7 +21,7 @@ package-family decision does not define behavior for unrelated packages.
 | --- | --- |
 | [`0001` - Ark package family architecture](0001-ark-package-architecture.md) | Defines package responsibilities, composition, and stable identifiers |
 | [`0002` - Ark shared provider configuration](0002-ark-shared-provider-configuration.md) | Defines shared PiAI values, component options, and settings behavior |
-| [`0003` - Ark loader-derived web-search provider ID](0003-ark-loader-derived-web-search-provider-id.md) | Defines server-side provider identity and browser integration constraints |
+| [`0003` - Ark web-search provider ID](0003-ark-loader-derived-web-search-provider-id.md) | Defines the fixed server-side provider identity and browser integration constraints |
 
 ## Maintenance
 

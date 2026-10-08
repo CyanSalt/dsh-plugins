@@ -1,4 +1,4 @@
-# Ark Loader-Derived Web-Search Provider ID
+# Ark Web-Search Provider ID
 
 > Scope: Ark package family
 
@@ -12,9 +12,11 @@ requires an explicit Host entry ID.
 
 ## Decision
 
-`web-search-ark` derives its provider ID from `ctx.loader.locate()` and falls
-back to `web-search-ark` when mounted programmatically outside a Loader entry.
-It does not accept a separate provider ID configuration field.
+`web-search-ark` always registers the public provider ID `web-search-ark`.
+It does not derive the ID from `ctx.loader.locate()`, because that API returns
+the Cordis-internal `include:<id>` representation for entries mounted by the
+profile include plugin. The plugin does not accept a separate provider ID
+configuration field.
 
 `ui-settings-ark` continues to address its own and the web-search configuration
 with the fixed IDs `ui-settings-ark` and `web-search-ark`. It does not expose a
@@ -23,10 +25,10 @@ integration dynamic without making the client plugin itself multi-instance.
 
 ## Consequences
 
-The server-side provider can use a custom Loader entry ID when no
-`ui-settings-ark` integration depends on it. Profiles that include the browser
-settings integration must keep their web-search entry ID and
-`web.searchProvider` set to `web-search-ark`.
+Profiles that include the browser settings integration must keep their
+web-search entry ID and `web.searchProvider` set to `web-search-ark`.
+Supporting multiple provider instances or custom provider IDs requires a
+separate configuration contract and browser integration update.
 
 Supporting multiple browser settings instances requires DSH to pass Host entry
 identity through the client plugin or slot contract.

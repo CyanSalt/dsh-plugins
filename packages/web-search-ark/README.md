@@ -68,8 +68,9 @@ authorization header.
 
 ## Provider ID
 
-The provider ID comes from the plugin's Cordis Loader entry. A programmatic
-mount outside a Loader entry falls back to `web-search-ark`.
+The provider always registers as `web-search-ark`, including programmatic
+mounts. This fixed ID is required when the package is used with
+`@cyansalt/dsh-client-ui-settings-ark`.
 
 The browser settings integration uses the fixed `web-search-ark` entry ID, so
 keep that ID when using `@cyansalt/dsh-client-ui-settings-ark`.

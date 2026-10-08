@@ -48,10 +48,10 @@ only controls the web-search tool request.
 - LLM provider: `ark`
 - Default web search provider: `web-search-ark`
 
-The server-side web-search provider derives its ID from its Loader entry and
-uses `web-search-ark` only as the fallback for programmatic mounts. The browser
-settings integration cannot discover dynamic Host entry IDs, so profiles that
-include it keep the web-search entry ID at `web-search-ark`.
+The server-side web-search provider always registers as `web-search-ark`.
+The browser settings integration uses the same fixed entry ID, so profiles
+that include it keep the web-search entry ID and `web.searchProvider` at
+`web-search-ark`.
 
 Changes to these identifiers are migrations and require an architecture
 decision before implementation.
